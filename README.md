@@ -1,1 +1,1 @@
-# blocipedia-node
+# blocipedia
