@@ -17,6 +17,7 @@ module.exports = {
         type: Sequelize.TEXT
       },
       private: {
+        allowNull: false,
         type: Sequelize.BOOLEAN
       },
       createdAt: {
