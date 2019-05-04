@@ -22,7 +22,16 @@
         <label for="body">Wiki body</label>
         <textarea rows="4" class="form-control" name="body" placeholder="Enter Description"><%= wiki.body %></textarea>
       </div>
-      <button type="submit" class="btn btn-primary">Update</button>
+      <label for="private">Private Wiki?</label>
+      <div class="form-group btn-group btn-group-toggle" data-toggle='buttons'>
+        <label class='btn btn-secondary active'>
+          <input type="radio" name="private" id="private1" value='false' checked>No
+        </label>
+        <label class='btn btn-secondary'>
+          <input type="radio" name="private" id="private2" value='true'>Yes
+        </label>
+      </div>
+      <div><button type="submit" class="btn btn-primary">Update</button></div>
     </form>
   </main>
 
