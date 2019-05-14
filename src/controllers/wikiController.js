@@ -1,4 +1,5 @@
 const wikiQueries = require('../db/queries.wikis.js');
+const md = require('markdown-it')();
 
 module.exports = {
   index (req, res, next) {
@@ -6,7 +7,7 @@ module.exports = {
       if(err) {
         res.redirect(500, 'static/index')
       } else {
-        res. render('wikis/index', {wikis})
+        res.render('wikis/index', {wikis})
       }
     })
   },
@@ -31,11 +32,12 @@ module.exports = {
     })
   },
   show(req, res, next) {
-    wikiQueries.getWiki(req.params.id, (err, wiki) => {
+    wikiQueries.getWiki(req.params.id, (err, wiki) => {   // console.log(result);
+      
       if(err || wiki == null) {
         res.redirect(404,'/')
       } else {
-        res.render('wikis/show', {wiki})
+        res.render('wikis/show', {wiki, md})
       }
     })
   },
