@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <% include ../static/partials/head.ejs %>
+</head>
+
+<body>
+
+  <% include ../static/partials/navbar.ejs %>
+
+  <main class="container">
+
+    <% include ../static/partials/messages.ejs %>
+
+    <section class="jumbotron">
+      <h1 class="display-2"><%= `${user.name}` %></h1>
+      <h1 class="display-4"><%= `${user.email}` %></h1>
+    </section>
+
+
+    <% if (currentUser) { %>
+    <% if (user.role === 0) { %>
+    <section>
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Upgrade your account!</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+            content.</p>
+          <a href="/users/<%= currentUser.id %>/checkout" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </section>
+    <% } else if (user.role === 1) { %>
+    <section>
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Downgrade your account!</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+            content.</p>
+          <a href="/users/<%= currentUser.id %>/downgradeAccount" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </section>
+    <% } %>
+    <% } %>
+  </main>
+
+  <% include ../static/partials/baseScripts.ejs %>
+</body>
+
+</html>

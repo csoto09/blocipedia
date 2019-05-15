@@ -1,5 +1,8 @@
 const userQueries = require("../db/queries.users.js");
 const passport = require("passport");
+const keySecret = process.env.STRIPE_SECRET_KEY
+const keyPublishable = process.env.STRIPE_PUBLISHABLE_KEY
+const stripe = require('stripe')(keySecret);
 
 module.exports = {
   signUpForm(req, res, next) {
@@ -47,6 +50,65 @@ module.exports = {
     req.logout();
     req.flash('notice', "You've successfully signed out!");
     res.redirect('/');
-  }
+  },
+  profile(req, res, next) {
+    userQueries.getUser(req.params.id, (err, user) => {
+      if (err || user == null) {
+        req.flash('notice', 'No user found with that ID.')
+        res.redirect('/')
+      } else {
+        res.render('users/profile', {user})
+      }
+    })
+  },
+  checkout(req, res, next) {
+    res.render('users/checkout')
+  },
+  upgradeAccount(req, res, next) {
+    console.log('Stripe token received: ', req.body)
 
+    const token = req.body.stripeToken
+
+    stripe.charges.create({
+      amount: 1500,
+      currency:'usd',
+      description:'blocipedia upgrade',
+      source: token
+    })
+    .then((charge) => {
+      if(req.user.role === 0){
+      userQueries.upgradeUser(req, (err, user) => {
+        if (err) {
+          req.flash('error', err);
+          res.redirect('/');
+        } else {
+          req.flash('notice', 'payment successful')
+          res.redirect('/')
+        }
+      })
+    } else {
+      req.flash('notice', "You are already a premium member");
+      res.redirect('/');
+    }
+    })
+
+
+
+  },
+  downgradeAccount(req, res, next) {
+    if(req.user.role === 1) {
+      userQueries.downgradeUser(req, (err, user) => {
+        if(err) {
+          req.flash('error', err)
+          res.redirect('/')
+        } else {
+          req.flash('notice', 'downgrade successful')
+          res.redirect('/')
+        }
+      })
+    } else {
+      req.flash('notice', 'You are already a standard user')
+      res.redirect('/')
+    }
+  }
 }

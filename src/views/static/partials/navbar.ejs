@@ -17,12 +17,10 @@
         <li class='nav-item'>
           <a href="/wikis/new" class="nav-link">New Wiki</a>
         </li>
-        <li class='nav-item'>
-          <a href="/users/upgrade" class='nav-link'>Upgrade to Premium</a>
-        </li>
         <li class="nav-item">
-          <a class="nav-link" href="/users/sign_out">Signed in as <%= currentUser.email %> (Sign out?)</a>
+          <a class="nav-link" href="/users/<%= currentUser.id %>">Signed in as <%= currentUser.name %></a>
         </li>
+        <li class="nav-item"><a href="/users/sign_out" class="nav-link">Sign out</a></li>
         <% } else { %>
         <!-- #2 -->
         <li class="nav-item">
