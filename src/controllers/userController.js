@@ -92,8 +92,6 @@ module.exports = {
     }
     })
 
-
-
   },
   downgradeAccount(req, res, next) {
     if(req.user.role === 1) {
