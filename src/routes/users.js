@@ -12,5 +12,7 @@ router.get("/users/sign_in", userController.signInForm);
  router.get('/users/:id/checkout', userController.checkout)
  router.post('/users/:id/upgradeAccount', userController.upgradeAccount)
  router.get('/users/:id/downgradeAccount', userController.downgradeAccount)
+ router.get('/users/:id/makeAdmin', userController.makeAdmin)
+ router.get('/users/:id/removeAdmin', userController.removeAdmin)
 
 module.exports = router;

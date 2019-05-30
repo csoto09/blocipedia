@@ -11,6 +11,17 @@ module.exports = {
       }
     })
   },
+  privateIndex(req, res, next) {
+    wikiQueries.getPrivateWikis(req.user, (err, wikis) => {
+      if (err) {
+        res.redirect(500, 'static/index')
+      } else {
+        console.log(req.user);
+        
+        res.render('wikis/priv', {wikis})
+      }
+    })
+  },
   new(req, res, next) {
     res.render('wikis/new')
   },

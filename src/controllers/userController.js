@@ -108,5 +108,31 @@ module.exports = {
       req.flash('notice', 'You are already a standard user')
       res.redirect('/')
     }
+  },
+  makeAdmin(req, res, next) {
+    if(req.user.role !== 2) {
+      userQueries.makeAdmin(req, (err, user) => {
+        if(err) {
+          req.flash('error', err)
+          res.redirect('/')
+        } else {
+          req.flash('notice', `${req.user.name} (${req.user.email}) is now an administrator.`)
+          res.redirect('/')
+        }
+      })
+    }
+  },
+  removeAdmin(req, res, next) {
+    if(req.user.role === 2) {
+      userQueries.downgradeUser(req, (err, user) => {
+        if(err) {
+          req.flash('error', err)
+          res.redirect('/')
+        } else {
+          req.flash('notice', `${req.user.name} (${req.user.email}) no longer has admin privileges.`)
+          res.redirect('/')
+        }
+      })
+    }
   }
 }

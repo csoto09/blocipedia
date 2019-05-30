@@ -1,9 +1,20 @@
 const Wiki = require('./models').Wiki;
 const User = require('./models').User;
+const Sequelize = require('Sequelize');
+const Op = Sequelize.Op
+
+console.log(User);
+
 
 module.exports = {
   getAllWikis(callback) {
-    return Wiki.findAll()
+    return Wiki.findAll({
+      where: {
+        private: {
+          [Op.not]: true
+        }
+      }
+    })
     .then((wikis) => {
       callback(null, wikis)
     }).catch((err) => {
@@ -51,5 +62,22 @@ module.exports = {
         callback(err)
       });
     })
-  }
+  },
+  getPrivateWikis(user, callback) {
+    if(user.role === 1) {
+    return Wiki.findAll({
+      where: {
+        private: true,
+        userId: user.id
+      }
+    })
+    .then((wikis) => {
+      callback(null, wikis)
+    }).catch((err) => {
+      callback(err)      
+    });
+    } else {
+      callback(err)
+    }
+  },
 }

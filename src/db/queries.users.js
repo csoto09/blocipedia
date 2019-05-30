@@ -32,7 +32,6 @@ module.exports = {
     });
   },
   getUser(id, callback) {
-
     User.findByPk(id)
     .then((user) => {
       callback(null, user)
@@ -57,6 +56,16 @@ module.exports = {
       {where: {id: req.user.id}}
     )
     .then((user) => {
+      callback(null, user)
+    }).catch((err) => {
+      callback(err)
+    });
+  },
+  makeAdmin(req, callback) {
+    return User.update(
+      {role: 2},
+      {where: {id: req.user.id}}
+    ).then((user) => {
       callback(null, user)
     }).catch((err) => {
       callback(err)
