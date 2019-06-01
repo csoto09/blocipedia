@@ -80,4 +80,18 @@ module.exports = {
       callback(err)
     }
   },
+  makePublic(user, callback) {
+    Wiki.findAll({
+      where: { userId: user.id }
+    })
+    .then((wikis) => {
+      for(let i = 0; i < wikis.length; i++) {
+        wikis[i].update({
+          private: false
+        })
+      }
+    }).catch((err) => {
+      callback(err)
+    });
+  }
 }

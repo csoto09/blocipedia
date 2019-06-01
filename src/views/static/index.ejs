@@ -17,7 +17,14 @@
     <header class="jumbotron my-4">
       <h1 class="display-3">Welcome to Blocipedia</h1>
       <p class="lead">The sorta free encyclopedia.</p>
+      <% if (currentUser) { %>
+      <a class="btn btn-primary btn-lg" href="/users/<%= currentUser.id %>">Go to your profile</a>
+      <% if (currentUser.role === 0) { %>
+      <a href="/users/<%= currentUser.id %>/checkout" class="btn btn-primary btn-lg">Upgrade your account</a>
+      <% } %>
+      <% } else { %>
       <a href="/users/signup" class="btn btn-primary btn-lg">Sign up</a>
+      <% } %>
     </header>
 
     <!-- Page Features -->

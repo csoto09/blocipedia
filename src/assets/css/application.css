@@ -2,10 +2,18 @@ body {
   padding-top: 54px;
 }
 
-form#payment-form {
+/* form#payment-form {
   margin: 20px 0;
   height: auto
+} */
+div#card-element {
+  padding: 1rem;
 }
+
+/* 
+#up-form button {
+  max-width: 50px;
+} */
 
 button {
   float: left;

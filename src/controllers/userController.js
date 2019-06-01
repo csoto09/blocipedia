@@ -97,9 +97,19 @@ module.exports = {
     if(req.user.role === 1) {
       userQueries.downgradeUser(req, (err, user) => {
         if(err) {
+          // console.error(err.toString());
           req.flash('error', err)
           res.redirect('/')
         } else {
+          userQueries.makePublic(req.user, (err) => {
+            if (err) {
+              // console.error(err.toString());
+              req.flash('error', err);
+              res.redirect('/'); 
+            } else {
+              res.redirect("/");
+            }
+          })
           req.flash('notice', 'downgrade successful')
           res.redirect('/')
         }

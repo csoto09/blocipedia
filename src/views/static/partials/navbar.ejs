@@ -5,13 +5,13 @@
       aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <% if(currentUser) { %>
-    <% if(currentUser.role === 2) { %>
-    <a href="/users/<%= currentUser.id %>/removeAdmin">Remove Admin Privileges</a>
-    <% } else { %>
-    <a href="/users/<%= currentUser.id %>/makeAdmin">Make Admin</a>
-    <% }%>
-    <% }%>
+    <%# if(currentUser) { %>
+    <%# if(currentUser.role === 2) { #%>
+    <!-- <a href="/users/<%= currentUser.id %>/removeAdmin">Remove Admin Privileges</a> -->
+    <%# } else { #%>
+    <!-- <a href="/users/<%= currentUser.id %>/makeAdmin">Make Admin</a> -->
+    <%# }%>
+    <%# }%>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">

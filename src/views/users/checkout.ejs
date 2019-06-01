@@ -14,24 +14,16 @@
     <% include ../static/partials/messages.ejs %>
     <h1>Account Upgrade for <%= currentUser.name %></h1>
 
+    <div class="lead alert alert-info" role="alert">Need to test out the payment form? <p class='lead'>Use card number
+        <em>4242 4242 4242
+          4242</em> and enter a CCV
+        number, an expiration date of your choosing (make sure it's in the future), and a valid zip code.</p>
+      <p class="lead">Additional test credit cards can be found <a href="https://stripe.com/docs/testing#cards"
+          target="_blank">here</a></p>
+    </div>
+
     <form action="/users/<%= currentUser.id %>/upgradeAccount" method="POST" id="payment-form">
-      <div class="group" id="example-1">
-        <!-- <fieldset>
-          <div class="stripe-form-row row">
-            <label for="name">Name</label>
-            <input id="name" type="text" placeholder="Jane Doe" required="" autocomplete="name">
-          </div>
-          <div class="stripe-form-row row">
-            <label for="email">Email</label>
-            <input id="email" type="email" placeholder="janedoe@gmail.com" required="" autocomplete="email">
-          </div>
-          <div class="stripe-form-row row">
-            <label for="phone">Phone</label>
-            <input id="phone" type="tel" placeholder="(941) 555-0123" required="" autocomplete="tel">
-          </div>
-        </fieldset> -->
-
-
+      <div class="group" id="up-form">
         <!-- <label for="card-element">Card</label> -->
         <div id="card-element" class="StripeElement StripeElement--empty field">
           <!-- A Stripe Element will be inserted here. -->

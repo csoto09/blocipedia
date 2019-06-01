@@ -38,13 +38,15 @@
           <h5 class="card-title">Downgrade your account!</h5>
           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
             content.</p>
-          <a href="/users/<%= currentUser.id %>/downgradeAccount" class="btn btn-primary">Go somewhere</a>
+          <form id='downgrade' action="/users/<%= currentUser.id %>/downgradeAccount" method='GET'>
+            <button type="submit" class='btn btn-primary'>Downgrade account</button>
+          </form>
         </div>
       </div>
 
       <div class="card" style="width: 18rem;">
         <div class="card-body">
-          <h5 class="card-title">See Private Wikis</h5>
+          <h5 class="card-title">See Your Private Wikis</h5>
           <a href="/wikis/priv" class="btn btn-primary">Private Wikis</a>
         </div>
       </div>
@@ -54,6 +56,16 @@
   </main>
 
   <% include ../static/partials/baseScripts.ejs %>
+  <!-- needed reminder! https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit_event#JavaScript -->
+  <script>
+    const down = document.getElementById('downgrade')
+    down.addEventListener('click', e => {
+      e.preventDefault()
+      if (window.confirm('Are you sure you want to downgrade? If you do, all private wikis will be made public. NO EXCEPTIONS!')) {
+        down.submit()
+      }
+    })
+  </script>
 </body>
 
 </html>

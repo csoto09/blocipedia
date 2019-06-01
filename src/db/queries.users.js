@@ -1,4 +1,5 @@
 const User = require("./models").User;
+const Wiki = require('./models').Wiki;
 const bcrypt = require("bcryptjs");
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -67,6 +68,37 @@ module.exports = {
       {where: {id: req.user.id}}
     ).then((user) => {
       callback(null, user)
+    }).catch((err) => {
+      callback(err)
+    });
+  },
+  getPrivateWikis(user, callback) {
+    if(user.role === 1) {
+    return Wiki.findAll({
+      where: {
+        private: true,
+        userId: user.id
+      }
+    })
+    .then((wikis) => {
+      callback(null, wikis)
+    }).catch((err) => {
+      callback(err)      
+    });
+    } else {
+      callback(err)
+    }
+  },
+  makePublic(user, callback) {
+    Wiki.findAll({
+      where: { userId: user.id }
+    })
+    .then((wikis) => {
+      for(let i = 0; i < wikis.length; i++) {
+        wikis[i].update({
+          private: false
+        })
+      }
     }).catch((err) => {
       callback(err)
     });
