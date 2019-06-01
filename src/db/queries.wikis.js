@@ -1,18 +1,14 @@
 const Wiki = require('./models').Wiki;
 const User = require('./models').User;
-const Sequelize = require('Sequelize');
-const Op = Sequelize.Op
-
-console.log(User);
+// const Sequelize = require('Sequelize');
+// const Op = Sequelize.Op
 
 
 module.exports = {
   getAllWikis(callback) {
     return Wiki.findAll({
       where: {
-        private: {
-          [Op.not]: true
-        }
+        private: false
       }
     })
     .then((wikis) => {
