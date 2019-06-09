@@ -144,5 +144,15 @@ module.exports = {
         }
       })
     }
+  },
+  // FIXME: rename method below to collaborator list or something like that
+  index(req, res, next) {
+    userQueries.getAllUsers((err, users) => {
+      if(err) {
+        res.redirect(404, '/')
+      } else {
+        res.render('users/index', {users})
+      }
+    })
   }
 }

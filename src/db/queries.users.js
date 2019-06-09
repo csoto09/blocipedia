@@ -1,5 +1,6 @@
 const User = require("./models").User;
 const Wiki = require('./models').Wiki;
+const Collaborator = require('./models').Collaborator;
 const bcrypt = require("bcryptjs");
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -102,5 +103,19 @@ module.exports = {
     }).catch((err) => {
       callback(err)
     });
+  },
+  getAllUsers(callback) {
+    return User.findAll({
+      include: [
+        {
+          model: Collaborator,
+          as: 'collaborators'
+        }
+      ]
+    }).then((users) => {
+      callback(null, users)
+    }).catch((err) => {
+      callback(err)
+    })
   }
 }

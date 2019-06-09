@@ -1,7 +1,6 @@
 const Wiki = require('./models').Wiki;
 const User = require('./models').User;
-// const Sequelize = require('Sequelize');
-// const Op = Sequelize.Op
+const Collaborator = require("./models").Collaborator;
 
 
 module.exports = {
@@ -9,7 +8,13 @@ module.exports = {
     return Wiki.findAll({
       where: {
         private: false
-      }
+      },
+      include: [
+        {        
+          model: Collaborator,
+          as: 'collaborators'
+        }
+      ]
     })
     .then((wikis) => {
       callback(null, wikis)
@@ -27,7 +32,14 @@ module.exports = {
     });
   },
   getWiki(id, callback) {
-    return Wiki.findByPk(id)
+    return Wiki.findByPk(id, {
+      include: [
+        {
+          model: Collaborator,
+          as: 'collaborators'
+        }
+      ]
+    })
     .then((wiki) => {
       callback(null, wiki)
     }).catch((err) => {
@@ -65,7 +77,13 @@ module.exports = {
       where: {
         private: true,
         userId: user.id
-      }
+      },
+      include: [
+        {
+          model: Collaborator,
+          as: 'collaborators'
+        }
+      ]
     })
     .then((wikis) => {
       callback(null, wikis)
