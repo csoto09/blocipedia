@@ -9,9 +9,8 @@
   <% include ../static/partials/navbar.ejs %>
 
   <main class="container">
-
+    <% include ../static/partials/messages.ejs %>
     <h1>Edit Wiki</h1>
-
     <form action="/wikis/<%= wiki.id %>/update" method="post">
       <div class="form-group">
         <label for="title">Wiki title</label>
@@ -22,9 +21,10 @@
         <label for="body">Wiki body</label>
         <textarea rows="4" class="form-control" name="body" placeholder="Enter Description"><%= wiki.body %></textarea>
       </div>
-      <!-- TODO: markdown preview? -->
+      <!-- TODO: markdown preview? 
+      -->
 
-      <% if(currentUser && (currentUser.role === 1 || currentUser.role === 2)) { %>
+      <% if(currentUser && (currentUser.role === 1 || currentUser.role === 2) && wiki.private !== true) { %>
       <label for="private">Private Wiki?</label>
       <div class="form-group btn-group btn-group-toggle" data-toggle='buttons'>
         <label class='btn btn-secondary active'>
@@ -34,13 +34,21 @@
           <input type="radio" name="private" id="private2" value='true'>Yes
         </label>
       </div>
+      <% } %>
+
       <div>
-        <% if((currentUser.isPremium() || currentUser.isAdmin()) && wiki.private == true ) { %>
+        <% if(currentUser && (currentUser.isPremium() || currentUser.isAdmin()) && wiki.private == true ) { %>
         <h2>Add collaborators</h2>
-        <%- include('../users/index', {wiki: wiki}) %>
+        <a href="editcollab">Click here to add collaborators</a>
         <% } %>
       </div>
-      <% } %>
+      <div><% if(wiki.collaborators) { %>
+        <% wiki.collaborators.forEach((collab) => { %>
+        <li><%= collab.userId %> - <%= collab.User.name %> </li>
+        <% }) %>
+        <% } %>
+      </div>
+
       <div><button type="submit" class="btn btn-primary">Update</button></div>
     </form>
   </main>

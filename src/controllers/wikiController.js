@@ -1,5 +1,6 @@
-const wikiQueries = require('../db/queries.wikis.js');
-const userQueries = require("../db/queries.users");
+// TODO: implement authorization, maybe
+const wikiQueries = require('../db/queries.wikis');
+const userQueries = require('../db/queries.users');
 const md = require('markdown-it')();
 
 module.exports = {
@@ -39,6 +40,7 @@ module.exports = {
         
         res.redirect(500, '/wikis/new')
       } else {
+        req.flash('notice', 'success')
         res.redirect(303, `/wikis/${wiki.id}`)
       }
     })
@@ -61,21 +63,14 @@ module.exports = {
       }
     })
   },
-  edit(req, res, next) {
-    userQueries.getAllUsers((err, users) => {
-      if (err) {
-        res.redirect(404, '/wikis')
+  edit(req, res, next) { 
+    wikiQueries.getWiki(req.params.id, (err, wiki) => {
+      if(err || wiki == null) {
+        res.redirect(404, '/')
       } else {
-        wikiQueries.getWiki(req.params.id, (err, wiki) => {
-          if(err || wiki == null) {
-            res.redirect(404, '/')
-          } else {
-            res.render('wikis/edit', {wiki, users})
-          }
-        })
+        res.render('wikis/edit', {wiki})
       }
     })
-
   },
   update(req, res, next) {
     wikiQueries.updateWiki(req.params.id, req.body, (err, wiki) => {
@@ -85,5 +80,20 @@ module.exports = {
         res.redirect(`/wikis/${req.params.id}`)
       }
     })
-  }
+  }, 
+  addCollab(req, res, next) {
+    wikiQueries.getWiki(req.params.id, (err, wiki) => {
+      if(err || wiki == null) {
+        res.redirect(404, '/')
+      } else {
+        userQueries.getAllUsers((err, users) => {
+          if (err) { 
+            res.redirect(404, '/')
+          } else {
+            res.render('wikis/editcollab', {wiki, users})
+          }
+        })
+      }
+    })
+  }   
 }

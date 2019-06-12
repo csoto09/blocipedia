@@ -12,7 +12,10 @@ module.exports = {
       include: [
         {        
           model: Collaborator,
-          as: 'collaborators'
+          as: 'collaborators',
+          include: [{
+            model: User
+          }]
         }
       ]
     })
@@ -36,7 +39,12 @@ module.exports = {
       include: [
         {
           model: Collaborator,
-          as: 'collaborators'
+          as: 'collaborators',
+          include: [
+            {
+              model: User
+            }
+          ]
         }
       ]
     })
@@ -107,5 +115,6 @@ module.exports = {
     }).catch((err) => {
       callback(err)
     });
-  }
+  },
+  
 }

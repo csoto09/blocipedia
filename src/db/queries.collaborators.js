@@ -12,10 +12,10 @@ module.exports = {
     });
   },
 
-  delete(req, callback) {
-    return Collaborator.findByPk(req.params.id)
-    .then((collab) => {
-      return collab.destroy()
+  delete(id, callback) {
+    return Collaborator.destroy({ where: {id}})
+    .then((deletedRecordsCount) => {
+      callback(null, deletedRecordsCount);
     }).catch((err) => {
       callback(err)
     });

@@ -1,0 +1,53 @@
+<!-- TODO: collab styles 
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <% include ../static/partials/head.ejs %>
+</head>
+
+<body>
+  <% include ../static/partials/navbar.ejs %>
+  <main>
+    <% include ../static/partials/messages.ejs %>
+    <% if(users) { %>
+    <% users.forEach((user) => { %>
+    <% if(user.id !== wiki.userId) { %>
+    <li><%= user.id %> - <%= user.name %> => <%= user.collaborators.length %></li>
+    <% if(wiki.collaborators.User !== user.id) { %>
+    <form style="display: initial;" action="/wikis/<%= wiki.id %>/collaborators/addCollab" method="post">
+      <input type="hidden" value="<%= user.id %>" name="userId">
+      <input type="hidden" value="<%= wiki.id %>" name="wiki">
+      <button type="submit" class="btn btn-primary">Add Collaborator</button>
+    </form>
+    <% } else { %>
+    <form style="display: initial;" action="/wikis/<%= wiki.id %>/collaborators/<%= collaborator.id %>/removeCollab"
+      method="post">
+      <button type="submit" class="btn btn-danger">Remove Collaborator</button>
+    </form>
+    <% } %>
+    <% } %>
+    <% }) %>
+    <% } %>
+
+    <h3>assigned collabs</h3>
+    <ul>
+      <% if(wiki.collaborators && users) { %>
+      <% wiki.collaborators.forEach((collab) => { %>
+
+      <li><%= collab.userId %> - <%= collab.User.name %> <form style="display: initial;"
+          action="/wikis/<%= wiki.id %>/collaborators/<%= collab.id %>/removeCollab" method="post">
+          <button type="submit" class="btn btn-danger">Remove Collaborator</button>
+        </form>
+      </li>
+      <% }) %>
+      <% } %>
+      <li><%= wiki.collaborators.length %></li>
+    </ul>
+  </main>
+  <% include ../static/partials/baseScripts.ejs %>
+
+</body>
+
+</html>
