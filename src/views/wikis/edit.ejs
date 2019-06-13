@@ -38,8 +38,8 @@
 
       <div>
         <% if(currentUser && (currentUser.isPremium() || currentUser.isAdmin()) && wiki.private == true ) { %>
-        <h2>Add collaborators</h2>
-        <a href="editcollab">Click here to add collaborators</a>
+        <h2>Add/edit collaborators</h2>
+        <a href="editcollab" class='badge badge-pill badge-info my-2'>Click here to add or edit collaborators</a>
         <% } %>
       </div>
       <div><% if(wiki.collaborators) { %>

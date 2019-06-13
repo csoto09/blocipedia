@@ -9,45 +9,53 @@
 
 <body>
   <% include ../static/partials/navbar.ejs %>
-  <main>
+  <main class='container'>
     <% include ../static/partials/messages.ejs %>
 
     <% if(users) { %>
-    <h2>available collabs</h2>
-    <% users.forEach((user) => { %>
-    <% if(user.id !== wiki.userId) { %>
+    <section class='jumbotron'>
+      <h1 class='display-4'>Available Collaborators</h1>
+      <% users.forEach((user) => { %>
+      <% if(user.id !== wiki.userId) { %>
 
 
-    <% let match = wiki.collaborators.find((collab) => {
-      console.log(collab.userId);
+      <% let match = wiki.collaborators.find((collab) => {
     return collab.userId === user.id })%>
-    <% console.log(match) %>
-    <% if(match == undefined) { %>
-    <li><%= user.name %> - <%= user.email %></li>
-    <form style="display: initial;" action="/wikis/<%= wiki.id %>/collaborators/addCollab" method="post">
-      <input type="hidden" value='<%= user.name %>' name="collabName">
-      <input type="hidden" value="<%= user.id %>" name="userId">
-      <button type="submit" class="btn btn-primary">Add Collaborator</button>
-    </form>
-    <% } %>
-    <% } %>
-    <% }) %>
+      <% if(match == undefined) { %>
+      <form action="/wikis/<%= wiki.id %>/collaborators/addCollab" method="post">
+        <div class='collab row align-items-center my-3'><span class='col-7'><%= user.name %> - <%= user.email %></span>
+          <input type="hidden" value='<%= user.name %>' name="collabName">
+          <input type="hidden" value="<%= user.id %>" name="userId">
+          <button type="submit" class="btn btn-primary col-5">Add Collaborator</button>
+        </div>
+      </form>
+      <% } %>
+      <% } %>
+      <% }) %>
+    </section>
     <% } %>
 
-    <h3>assigned collabs</h3>
-    <h5>current collab count: <%= wiki.collaborators.length %></h5>
-    <ul>
-      <% if(wiki.collaborators && users) { %>
+
+
+    <% if(wiki.collaborators.length >= 1  && users) { %>
+    <section class='jumbotron'>
+      <h1 class='display-4'>Assigned Collaborators</h1>
+      <div class="align-items-center h3">current collab count: <span
+          class='badge badge-pill badge-info'><%= wiki.collaborators.length %></span></div>
       <% wiki.collaborators.forEach((collab) => { %>
 
-      <li><%= collab.userId %> - <%= collab.User.name %> <form style="display: initial;"
-          action="/wikis/<%= collab.wikiId %>/collaborators/<%= collab.id %>/removeCollab" method="post">
-          <button type="submit" class="btn btn-danger">Remove Collaborator</button>
-        </form>
-      </li>
+
+      <form action="/wikis/<%= collab.wikiId %>/collaborators/<%= collab.id %>/removeCollab" method="post">
+        <div class='collab row align-items-center my-3'>
+          <span class='col-7'><%= collab.User.name %> - <%= collab.User.email %></span>
+          <button type="submit" class="btn btn-danger col-5">Remove Collaborator</button>
+        </div>
+      </form>
+
       <% }) %>
-      <% } %>
-    </ul>
+    </section>
+    <% } %>
+    <a href="edit" class="btn btn-primary">Back to Wiki</a>
   </main>
   <% include ../static/partials/baseScripts.ejs %>
 
