@@ -10,7 +10,7 @@
 
   <main class="container">
     <% include ../static/partials/messages.ejs %>
-    <h1>Edit Wiki</h1>
+    <h1 class='display-4'>Edit Wiki</h1>
     <form action="/wikis/<%= wiki.id %>/update" method="post">
       <div class="form-group">
         <label for="title">Wiki title</label>
@@ -43,9 +43,12 @@
         <% } %>
       </div>
       <div><% if(wiki.collaborators) { %>
-        <% wiki.collaborators.forEach((collab) => { %>
-        <li><%= collab.userId %> - <%= collab.User.name %> </li>
-        <% }) %>
+        <h3>Collaborators</h3>
+        <ul class='list-group'>
+          <% wiki.collaborators.forEach((collab) => { %>
+          <li class="list-group-item"><%= collab.User.name %> - <%= collab.User.email %></li>
+          <% }) %>
+        </ul>
         <% } %>
       </div>
 

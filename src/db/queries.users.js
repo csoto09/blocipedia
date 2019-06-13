@@ -4,6 +4,7 @@ const Collaborator = require('./models').Collaborator;
 const bcrypt = require("bcryptjs");
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const sequelize = require("./models/index").sequelize;
 
 
 
@@ -106,6 +107,7 @@ module.exports = {
   },
   getAllUsers(callback) {
     return User.findAll({
+      order: [sequelize.fn('lower', sequelize.col('name'))],
       include: [
         {
           model: Collaborator,

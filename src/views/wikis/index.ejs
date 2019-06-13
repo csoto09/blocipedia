@@ -18,9 +18,36 @@
       <!-- #1 -->
       <% wikis.forEach((wiki) => { %>
       <!-- #2 -->
+      <% if(currentUser) { %>
+      <% let collab = wiki.collaborators.find((collab) => {
+            return collab.userId === currentUser.id })%>
+      <% if(wiki.private !== true) { %>
       <li class="list-group-item">
-        <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %> </a>
+        <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %></a>
       </li>
+
+      <% } else if ((wiki.userId === currentUser.id) && wiki.private === true) {%>
+      <li class="list-group-item">
+        <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %></a>
+        <span class="badge badge-danger">PRIVATE</span>
+        <span class="badge badge-success">Owner</span>
+      </li>
+      <% } else if (wiki.userId === currentUser.id) {%>
+      <li class="list-group-item">
+        <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %></a> <span class="badge badge-success">Owner</span>
+      </li>
+      <% } else if (collab !== undefined) {%>
+      <li class="list-group-item">
+        <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %></a>
+        <span class="badge badge-danger">PRIVATE</span>
+        <span class="badge badge-info">Collaborator</span>
+      </li>
+      <% }%>
+      <% } else if (wiki.private !== true) { %>
+      <li class="list-group-item">
+        <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %></a>
+      </li>
+      <% }%>
       <% }) %>
     </ul>
 

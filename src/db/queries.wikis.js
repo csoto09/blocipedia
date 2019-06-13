@@ -1,15 +1,13 @@
 const Wiki = require('./models').Wiki;
 const User = require('./models').User;
 const Collaborator = require("./models").Collaborator;
+const sequelize = require("./models/index").sequelize;
 
 
 module.exports = {
   getAllWikis(callback) {
     return Wiki.findAll({
-      where: {
-        private: false
-      },
-      order: [['title', 'ASC']],
+      order: [sequelize.fn('lower', sequelize.col('title'))],
       include: [
         {        
           model: Collaborator,

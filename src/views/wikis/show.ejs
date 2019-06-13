@@ -11,7 +11,9 @@
   <main class="container">
     <% include ../static/partials/messages.ejs %>
     <h1><%= wiki.title %> - <%= wiki.User.name %></h1>
-    <% if (currentUser && (currentUser.id === wiki.User.id)) { %>
+    <% let collab = wiki.collaborators.find((collab) => {
+      return collab.userId === currentUser.id })%>
+    <% if (currentUser && (currentUser.id === wiki.User.id || collab !== undefined)) { %>
     <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
     <form style="display:initial" action="/wikis/<%#= wiki.id %>/destroy" method="post">
       <button type="submit" class="btn btn-danger">Delete</button>
