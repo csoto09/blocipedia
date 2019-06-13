@@ -9,7 +9,10 @@ for(let i = 1; i <= 20; i++) {
     title: faker.lorem.words(),
     body: faker.lorem.lines(10),
     private: false,
-    userId: 5,
+    userId: faker.random.number({
+      'min': 2,
+      'max': 11
+    }),
     createdAt: new Date(),
     updatedAt: new Date()
   })

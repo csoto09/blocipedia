@@ -97,13 +97,11 @@ module.exports = {
     if(req.user.role === 1) {
       userQueries.downgradeUser(req, (err, user) => {
         if(err) {
-          // console.error(err.toString());
           req.flash('error', err)
           res.redirect('/')
         } else {
           userQueries.makePublic(req.user, (err) => {
             if (err) {
-              // console.error(err.toString());
               req.flash('error', err);
               res.redirect('/'); 
             } else {
@@ -144,5 +142,14 @@ module.exports = {
         }
       })
     }
+  },
+  listUsers(req, res, next) {
+    userQueries.getAllUsers((err, users) => {
+      if(err) {
+        res.redirect(404, '/')
+      } else {
+        res.render('users/list', {users})
+      }
+    })
   }
 }

@@ -1,8 +1,10 @@
 const User = require("./models").User;
 const Wiki = require('./models').Wiki;
+const Collaborator = require('./models').Collaborator;
 const bcrypt = require("bcryptjs");
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const sequelize = require("./models/index").sequelize;
 
 
 
@@ -102,5 +104,20 @@ module.exports = {
     }).catch((err) => {
       callback(err)
     });
+  },
+  getAllUsers(callback) {
+    return User.findAll({
+      order: [sequelize.fn('lower', sequelize.col('name'))],
+      include: [
+        {
+          model: Collaborator,
+          as: 'collaborators'
+        }
+      ]
+    }).then((users) => {
+      callback(null, users)
+    }).catch((err) => {
+      callback(err)
+    })
   }
 }

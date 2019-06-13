@@ -1,0 +1,64 @@
+<!-- TODO: collab styles 
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <% include ../static/partials/head.ejs %>
+</head>
+
+<body>
+  <% include ../static/partials/navbar.ejs %>
+  <main class='container'>
+    <% include ../static/partials/messages.ejs %>
+
+    <% if(users) { %>
+    <section class='jumbotron'>
+      <h1 class='display-4'>Available Collaborators</h1>
+      <% users.forEach((user) => { %>
+      <% if(user.id !== wiki.userId) { %>
+
+
+      <% let match = wiki.collaborators.find((collab) => {
+    return collab.userId === user.id })%>
+      <% if(match == undefined) { %>
+      <form action="/wikis/<%= wiki.id %>/collaborators/addCollab" method="post">
+        <div class='collab row align-items-center my-3'><span class='col-7'><%= user.name %> - <%= user.email %></span>
+          <input type="hidden" value='<%= user.name %>' name="collabName">
+          <input type="hidden" value="<%= user.id %>" name="userId">
+          <button type="submit" class="btn btn-primary col-5">Add Collaborator</button>
+        </div>
+      </form>
+      <% } %>
+      <% } %>
+      <% }) %>
+    </section>
+    <% } %>
+
+
+
+    <% if(wiki.collaborators.length >= 1  && users) { %>
+    <section class='jumbotron'>
+      <h1 class='display-4'>Assigned Collaborators</h1>
+      <div class="align-items-center h3">current collab count: <span
+          class='badge badge-pill badge-info'><%= wiki.collaborators.length %></span></div>
+      <% wiki.collaborators.forEach((collab) => { %>
+
+
+      <form action="/wikis/<%= collab.wikiId %>/collaborators/<%= collab.id %>/removeCollab" method="post">
+        <div class='collab row align-items-center my-3'>
+          <span class='col-7'><%= collab.User.name %> - <%= collab.User.email %></span>
+          <button type="submit" class="btn btn-danger col-5">Remove Collaborator</button>
+        </div>
+      </form>
+
+      <% }) %>
+    </section>
+    <% } %>
+    <a href="edit" class="btn btn-primary">Back to Wiki</a>
+  </main>
+  <% include ../static/partials/baseScripts.ejs %>
+
+</body>
+
+</html>
