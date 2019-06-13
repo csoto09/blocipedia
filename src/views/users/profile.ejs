@@ -14,7 +14,8 @@
     <% include ../static/partials/messages.ejs %>
 
     <section class="jumbotron">
-      <h1 class="display-2"><%= `${user.name}` %></h1>
+      <h1 class="display-2"><%= `${user.name}` %><% if(user.role == 2) { %> <span
+          class='badge badge-primary'>Admin</span><% } %></h1>
       <h1 class="display-4"><%= `${user.email}` %></h1>
     </section>
 

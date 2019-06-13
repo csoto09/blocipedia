@@ -9,6 +9,7 @@ module.exports = {
       where: {
         private: false
       },
+      order: [['title', 'ASC']],
       include: [
         {        
           model: Collaborator,
@@ -37,15 +38,8 @@ module.exports = {
   getWiki(id, callback) {
     return Wiki.findByPk(id, {
       include: [
-        {
-          model: Collaborator,
-          as: 'collaborators',
-          include: [
-            {
-              model: User
-            }
-          ]
-        }
+        {model: User},
+        {model: Collaborator, as: 'collaborators', include: [{model: User}]}
       ]
     })
     .then((wiki) => {

@@ -11,6 +11,10 @@ module.exports = class ApplicationPolicy {
      return this.record && (this.record.userId == this.user.id);
    }
 
+   _isCollaborator() {
+     return this.record && this.record.collaborators.find((collaborator) => collaborator.userId == this.user.id)
+   }
+
    _isPremium() {
     return this.user && this.user.role == "1";   
    }
@@ -29,13 +33,16 @@ module.exports = class ApplicationPolicy {
    }
  
    show() {
-     return true;
+     if(this.record.private !== true) { return true; } 
+     else {
+      return this.edit()
+     }
    }
  
   // #4
    edit() {
      return this.new() &&
-       this.record && (this._isOwner() || this._isAdmin());
+       this.record && (this._isOwner() || this._isAdmin() || this._isCollaborator());
    }
  
    update() {

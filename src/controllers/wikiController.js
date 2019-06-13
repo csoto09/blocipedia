@@ -68,8 +68,14 @@ module.exports = {
       if(err || wiki == null) {
         res.redirect(404,'/')
       } else {
-        if(!wiki.private || req.user.id === wiki.userId)
-        res.render('wikis/show', {wiki, md})
+        const authorized = new Authorizer(req.user, wiki).show()
+
+        if(authorized) {
+          res.render('wikis/show', {wiki, md})
+        } else {
+          req.flash('notice', 'You are not authorized to do that. Please sign in and try again.')
+          res.redirect('/')
+        }
       }
     })
   },
@@ -87,7 +93,7 @@ module.exports = {
       if(err || wiki == null) {
         res.redirect(404, '/')
       } else {
-        const authorized = new Authorizer(req.user, topic).edit()
+        const authorized = new Authorizer(req.user, wiki).edit()
         if(authorized) {
           res.render('wikis/edit', {wiki})
         } else {
