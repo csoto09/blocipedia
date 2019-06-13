@@ -11,20 +11,23 @@
   <% include ../static/partials/navbar.ejs %>
   <main>
     <% include ../static/partials/messages.ejs %>
+
     <% if(users) { %>
+    <h2>available collabs</h2>
     <% users.forEach((user) => { %>
     <% if(user.id !== wiki.userId) { %>
-    <li><%= user.id %> - <%= user.name %> => <%= user.collaborators.length %></li>
-    <% if(wiki.collaborators.User !== user.id) { %>
+
+
+    <% let match = wiki.collaborators.find((collab) => {
+      console.log(collab.userId);
+    return collab.userId === user.id })%>
+    <% console.log(match) %>
+    <% if(match == undefined) { %>
+    <li><%= user.name %> - <%= user.email %></li>
     <form style="display: initial;" action="/wikis/<%= wiki.id %>/collaborators/addCollab" method="post">
+      <input type="hidden" value='<%= user.name %>' name="collabName">
       <input type="hidden" value="<%= user.id %>" name="userId">
-      <input type="hidden" value="<%= wiki.id %>" name="wiki">
       <button type="submit" class="btn btn-primary">Add Collaborator</button>
-    </form>
-    <% } else { %>
-    <form style="display: initial;" action="/wikis/<%= wiki.id %>/collaborators/<%= collaborator.id %>/removeCollab"
-      method="post">
-      <button type="submit" class="btn btn-danger">Remove Collaborator</button>
     </form>
     <% } %>
     <% } %>
@@ -32,18 +35,18 @@
     <% } %>
 
     <h3>assigned collabs</h3>
+    <h5>current collab count: <%= wiki.collaborators.length %></h5>
     <ul>
       <% if(wiki.collaborators && users) { %>
       <% wiki.collaborators.forEach((collab) => { %>
 
       <li><%= collab.userId %> - <%= collab.User.name %> <form style="display: initial;"
-          action="/wikis/<%= wiki.id %>/collaborators/<%= collab.id %>/removeCollab" method="post">
+          action="/wikis/<%= collab.wikiId %>/collaborators/<%= collab.id %>/removeCollab" method="post">
           <button type="submit" class="btn btn-danger">Remove Collaborator</button>
         </form>
       </li>
       <% }) %>
       <% } %>
-      <li><%= wiki.collaborators.length %></li>
     </ul>
   </main>
   <% include ../static/partials/baseScripts.ejs %>

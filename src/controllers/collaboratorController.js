@@ -9,10 +9,10 @@ module.exports = {
     collabQueries.create(newCollab, (err, collab) => {
       if(err) {
         req.flash('error', 'There has been an error adding your collaborator. Please try again.')
-        res.redirect(`/wikis/${req.params.id}/add-collab`)
+        res.redirect(`/wikis/${req.params.id}/editcollab`)
       } else {
-        req.flash('notice', 'Collaborator added.')
-        res.redirect(303, `/wikis/${req.params.id}`)
+        req.flash('notice', `${req.body.collabName} added as collab`)
+        res.redirect(303, `/wikis/${req.params.id}/editcollab`)
       }
     })
   },
@@ -22,8 +22,8 @@ module.exports = {
         req.flash("error", err);
         res.redirect(`/wikis/${req.params.id}`)
       } else {
-        req.flash('notice', 'removed successfully')
-        res.redirect(`/wikis/${req.params.id}/editcollab`)
+        req.flash('notice', 'Collaborator removed successfully')
+        res.redirect(`/wikis/${req.params.wikiId}/editcollab`)
       }
     })
   }
